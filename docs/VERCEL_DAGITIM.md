@@ -11,6 +11,7 @@ Hazırlık dalı: `codex/phase4-preview`. Production yayını bu fazın kapsamı
 - Vercel mevcut `manage.py` / WSGI uygulamasını algılar. Ayrı API girişi veya frontend derlemesi yoktur.
 - `STATIC_ROOT` nedeniyle Vercel build sırasında `collectstatic` çalıştırıp dosyaları CDN'den sunar. Ek WhiteNoise paketi veya özel build komutu gerekmez.
 - **Build ve HTTP istekleri migration çalıştırmaz.** Yeni migration varsa önce yerel session pooler ile kontrollü uygulanır.
+- Bu fazda `git.deploymentEnabled=false`: push'lar kendiliğinden yayın başlatmaz. Dağıtım açıkça Preview hedefiyle, seçilen Git commit'inden oluşturulur. Production dalı `master` olarak doğrulandı; production ortamında uygulama sırları tanımlı değildir.
 - `.vercelignore` yerel gizli dosyaları, sanal ortamı, IDE/geçici dosyaları ve test/kanıt içeriklerini dağıtım yüklemesinden çıkarır. Belgeler GitHub'da kalır.
 
 Resmi kaynaklar: [Django dağıtımı](https://vercel.com/docs/frameworks/full-stack/django), [Python runtime](https://vercel.com/docs/functions/runtimes/python), [ortam değişkenleri](https://vercel.com/docs/environment-variables).

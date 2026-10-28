@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "django",
+  "git": {"deploymentEnabled": false},
   "regions": ["fra1"],
   "functions": {
     "config/wsgi.py": {
