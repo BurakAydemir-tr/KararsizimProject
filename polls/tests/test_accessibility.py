@@ -85,9 +85,11 @@ class AccessibleFlowTests(TestCase):
     )
     def test_https_proxy_accepts_own_origin_and_rejects_another_vercel_origin(self):
         url = reverse("accounts:signin")
-        client = Client(enforce_csrf_checks=True, HTTP_X_FORWARDED_PROTO="https")
+        client = Client(enforce_csrf_checks=True, HTTP_HOST="testserver", HTTP_X_FORWARDED_PROTO="https")
         response = client.get(url)
         self.assertEqual(response.status_code, 200)  # no redirect loop behind TLS proxy
+        self.assertTrue(response.wsgi_request.is_secure())
+        self.assertEqual(response.wsgi_request.get_host(), "testserver")
         self.assertTrue(client.cookies["csrftoken"]["secure"])
         credentials = {
             "username": self.user.username,
