@@ -1,6 +1,6 @@
 from html.parser import HTMLParser
 
-from django.test import TestCase
+from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
 from accounts.models import User
@@ -76,4 +76,26 @@ class AccessibleFlowTests(TestCase):
         self.assertContains(response, "Bu ankete oy verdin")
         self.assertNotContains(response, "data-vote-form")
         self.assert_references_exist(response)
+
+    @override_settings(
+        SECURE_PROXY_SSL_HEADER=("HTTP_X_FORWARDED_PROTO", "https"),
+        SECURE_SSL_REDIRECT=True,
+        SESSION_COOKIE_SECURE=True,
+        CSRF_COOKIE_SECURE=True,
+    )
+    def test_https_proxy_accepts_own_origin_and_rejects_another_vercel_origin(self):
+        url = reverse("accounts:signin")
+        client = Client(enforce_csrf_checks=True, HTTP_X_FORWARDED_PROTO="https")
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)  # no redirect loop behind TLS proxy
+        self.assertTrue(client.cookies["csrftoken"]["secure"])
+        credentials = {
+            "username": self.user.username,
+            "password": "Test-password!34892",
+            "csrfmiddlewaretoken": client.cookies["csrftoken"].value,
+        }
+        self.assertEqual(client.post(url, credentials, HTTP_ORIGIN="https://unrelated.vercel.app").status_code, 403)
+        response = client.post(url, credentials, HTTP_ORIGIN="https://testserver")
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(client.cookies["sessionid"]["secure"])
 

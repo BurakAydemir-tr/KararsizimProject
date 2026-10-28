@@ -1,11 +1,11 @@
 # Kararsızım — Proje Tanımı, Geliştirme Planı ve ChatGPT Promptları
 
-Belge sürümü: 1.4  
+Belge sürümü: 1.5  
 Hazırlanma tarihi: 20 Ekim 2026  
-Son güncelleme: 27 Ekim 2026  
+Son güncelleme: 28 Ekim 2026  
 Hedef: Önce çalışan ve denenebilir bir web uygulaması prototipi, ardından küçük adımlarla geliştirme.
 
-Güncel uygulama durumu ve doğrulamalar: [PROJE_DURUMU.md](PROJE_DURUMU.md). Faz 3 arayüz ve sağlamlaştırma kontrolleri tamamlandı; Faz 4 kullanıcı kararıyla başlayacak.
+Güncel uygulama durumu ve doğrulamalar: [PROJE_DURUMU.md](PROJE_DURUMU.md). Faz 3 tamamlandı; Faz 4 Vercel önizleme hazırlığı devam ediyor. Dağıtım rehberi: [VERCEL_DAGITIM.md](VERCEL_DAGITIM.md).
 
 ## 1. Bu belge nasıl kullanılmalı?
 

@@ -4,6 +4,8 @@ Django ve Supabase PostgreSQL ile geliştirilen anket uygulaması. **Faz 3**: ç
 
 Ürün kararları: [ana belge](docs/KARARSIZIM_PROJE_PLANI_VE_PROMPT.md). Tamamlanan kontroller ve kalan engeller: [proje durumu](docs/PROJE_DURUMU.md).
 
+Faz 4 Vercel önizleme hazırlığı: [dağıtım rehberi](docs/VERCEL_DAGITIM.md). Çevrimiçi dağıtım durumu proje durumunda ayrıca belirtilir. Yerel çalıştırma komutları değişmedi.
+
 27 Ekim 2026 itibarıyla Faz 2 şeması Supabase'e uygulandı: 22 migration, 13 özel tablo. Kritik iş kuralları ayrı PostgreSQL test veritabanında, temel akış ayrıca izole tarayıcı ortamında doğrulandı. Ayrıntılı sonuçlar durum belgesindedir.
 
 ## Windows PowerShell kurulumu

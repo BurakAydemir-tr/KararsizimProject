@@ -1,0 +1,13 @@
+.env*
+.venv/
+.tmp/
+.idea/
+.git/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.log
+docs/
+accounts/tests/
+polls/tests/
+scripts/
