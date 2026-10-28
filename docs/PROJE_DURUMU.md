@@ -1,26 +1,37 @@
 # Kararsızım — Proje durumu
 
-Son güncelleme: **28 Ekim 2026**. Kapsam: **Faz 4 — Vercel önizleme hazırlığı (devam ediyor)**.
+Son güncelleme: **28 Ekim 2026**. Kapsam: **Faz 4 — Çalışan Vercel önizlemesi**.
 Ürün referansı: [ana plan](KARARSIZIM_PROJE_PLANI_VE_PROMPT.md). Kurulum ve komutlar: [README](../README.md).
 
 ## Teslim durumu
 
-**Faz 3 tamamlandı; Faz 4 başladı.** Django/Supabase temeli ve çalışan Faz 2 işlevleri korundu. Vercel için hazırlık dosyaları eklendi; çevrimiçi dağıtım henüz doğrulanmadı.
+**Faz 4 tamamlandı.** Django/Supabase temeli ve çalışan işlevler korundu. Vercel Preview yayını READY durumunda; gerçek HTTPS adresinde üyelik ve oylama akışı doğrulandı. Production yayını veya Faz 5 başlatılmadı.
 
-## Faz 4 hazırlığı
+## Faz 4 teslimi
 
 - GitHub kaynak adresi: `BurakAydemir-tr/KararsizimProject`; çalışma dalı `codex/phase4-preview`.
 - Vercel hedefi: Kaptan (`kaptan4`, `team_zolmCXRGWBcqIns3PHPfcIqH`) / `kararsizim`, Preview. Ekip erişimi kullanıcı tarafından onaylandı ve doğrulandı.
+- Proje ID: `prj_I7NY6gR5g7SL8KvxPAD5XlxPZNAi`; deployment: `dpl_9V3FACCFPpq9JoumDpVpYs1sFbK3`.
+- [Önizleme adresi](https://kararsizim-gqndxxo2i-kaptan4.vercel.app) — READY, Frankfurt `fra1`, Django 5.2.18 / Python 3.14.8, build 9 saniye. Uygulama commit'i `ac2822c7d7250f0888a2dad20fb63ea9b6d38dab`; kaynak CLI yüklemesi ve aynı Git commit metadata'sı doğrulandı. Sonraki belge/kanıt commit'leri çalışan uygulamayı değiştirmez.
+- Kalıcı Vercel Authentication koruması açık. Kullanıcının açık onayıyla yalnızca bu deployment için 23 saatlik paylaşım bağlantısı oluşturuldu; erişim parametresi Git'e yazılmadı, sohbette paylaşıldı. Süre dolunca Vercel oturumu veya yeni paylaşım bağlantısı gerekir.
 - `vercel.json`: Django preset, mevcut WSGI girişi, Frankfurt, 30 saniye. Mevcut Python 3.14 ve paket sürümleri korundu; ek runtime paketi yok.
 - `config.vercel_settings`: HTTPS, güvenli çerezler, kapalı debug, tam deployment/branch hostname ve HTTPS CSRF origin'leri. Yerel `config.settings` davranışı korunuyor.
 - `.vercelignore`: gizli ayarlar, geçici dosyalar ve test/kanıt içerikleri kaynak yüklemesinden dışlanıyor.
 - `scripts/prepare_vercel_env.py`: ayrı preview anahtarlarıyla Git dışında kalan ortam dosyası hazırlığı; mevcut dosyayı üzerine yazarak anahtar döndürmez. Yanlış/session pooler adresini reddeder.
 - [Dağıtım rehberi](VERCEL_DAGITIM.md) eklendi. Migration'lar build/HTTP isteklerine bağlanmadı; şema değiştirilmedi.
-- **Geçen kontroller:** 18 çevrimdışı test, Django sistem kontrolü, pip check; 130 statik dosya collectstatic ile toplandı. Supabase salt okunur kontrolünde 13/13 uygulama tablosunda RLS etkin.
+- **Geçen kontroller:** Tam paket **52/52**, ayrı geçici PostgreSQL DB'si; mevcut 5 eşzamanlılık testi dahil. Ayrıca 18 çevrimdışı test, sistem kontrolü ve pip check geçti; 130 statik dosya yerelde toplandı, Vercel build'inde collectstatic çalıştı. Supabase 13/13 uygulama tablosunda RLS etkin.
 - `check --deploy`: yalnızca önizleme için bilinçli bırakılan HSTS alt alan adı/preload uyarıları (`security.W005`, `security.W021`). HSTS süresi bir saat; production alan adı henüz yok.
-- **Bekleyen:** yerel güncel parola Supabase session pooler ve doğrudan bağlantıda reddedildi. Bağlantı/migration kontrolü ve ayrı PostgreSQL tam test paketi yeni parola eşleşince tekrarlanmalı. Gizli değerler hata çıktısında gösterilmedi.
-- **Bekleyen:** GitHub Login Connection sonrası Vercel, GitHub uygulamasına depo erişimi verilmesini istiyor. Proje oluşturma bu aşamada başarısız oldu; başarılı deployment/READY URL yok.
-- Gerçek HTTPS URL üzerinden üyelik/anket/oylama/CSRF/çerez/statik dosya kontrolleri henüz yapılamadı. Bu nedenle **Faz 4 tamamlanmış sayılmaz**; aşağıdaki Faz 3 sonuçları korunmuş tarihsel kanıttır.
+- Kullanıcı DB parolasını yeniledi; `.env` güncellendi, session pooler bağlantısı ve bekleyen migration olmadığı doğrulandı. Tam PostgreSQL testleri de yeni bağlantıyla geçti. Runtime transaction pooler bağlantısı gerçek kayıt/anket/oy işlemleriyle doğrulandı.
+- GitHub Login Connection ve Vercel GitHub uygulaması kullanıcı tarafından kuruldu; depo bağlantısı çalışıyor. CLI 65.5.0 oturumu ve Kaptan/kararsizim yerel bağlantısı doğrulandı. Dört Config ve üç Secret sadece Preview'a kaydedildi; production sırları eklenmedi. Sırlar kullanıcı onayıyla, yerel dosyadan stdin üzerinden, değerleri gösterilmeden aktarıldı.
+- İlk otomatik Git build'i Production hedefini seçti ve eksik production sırları nedeniyle ERROR oldu; çalışan production yayını oluşmadı. `git.deploymentEnabled=false` ile otomatik Git yayınları kapatıldı. Başarılı dağıtım CLI'da açık `--target=preview` seçimiyle yapıldı; API kaydında `target=null` Preview anlamına gelir. `master` production dalı olarak doğrulandı.
+- Canlı tarayıcı: kayıt → anket oluşturma → çıkış → misafir oy → %100 sonuç → yenilemede tekrar oy düğmesinin yokluğu → girişte oy aktarımı → aynı tarayıcıda ikinci hesapla bağımsız oy → %50/%50 sonuç geçti. Gerçek DB'de iki oyun iki ayrı hesaba bağlı olduğu ve sahipsiz misafir oyu kalmadığı ayrıca doğrulandı.
+- HTTPS ana sayfa, CSS, JS ve admin CSS HTTP 200; Türkçe 404, debug ayrıntısı yok. `private, no-store`, HSTS 3600, nosniff ve Secure CSRF çerezi gözlendi. Diğer çerez bayrakları konfigürasyon ve regresyon testlerinde doğrulandı; tekrar kullanılan HTTP istemcisinde misafir çerezi yeniden gönderilmedi.
+- Sonuç ekranı 360/768/1280 px genişlikte taşmadı; e-posta HTML'de görünmedi; uygulama kaynaklı tarayıcı konsol hatası yok. Bu Preview'ın son 30 dakikalık error/fatal runtime log taramasında kayıt yok.
+- Sentetik QA anketi akıştan kaldırıldı; iki QA hesabı devre dışı bırakılıp parolaları kullanılamaz yapıldı. Önceden var olan hesap/anket/oylar korunuyor; fiziksel satır silinmedi. Kalan geçici test veritabanı sayısı 0. Yerel sunucu açılmadı.
+
+Kanıtlar: [özet](verification/phase4/checks.json), [canlı tarayıcı kontrolleri](verification/phase4/browser-checks.json), [DB kontrolü](verification/phase4/database-checks.json), [QA temizliği](verification/phase4/qa-cleanup.json), [masaüstü sonuç](verification/phase4/results-desktop.png), [mobil sonuç](verification/phase4/results-360.png). Görseller yalnızca sentetik QA içerikleridir.
+
+Yerel curl/urllib istemcilerinde TLS bağlantı sıfırlaması görüldü; canlı kontroller gerçek tarayıcı ve kullanıcı onaylı geçici erişimi kullanan Vercel fetch üzerinden tamamlandı. Bu önizleme küçük test grubu içindir; production alan adı, e-posta doğrulama/parola sıfırlama ve geniş katılımlı yayın ayrı kapsamdır.
 
 Kullanıcı, hesap/misafir tekrar oy ve oy aktarımı senaryolarını elle denedi ve çalıştığını doğruladı. Son görsel düzeltmede kapalı anket etiketi açık turuncu zemin/koyu mercan yazıyla ayrıldı; açık anket etiketi mor kaldı. Yerel sunucu kullanıcının isteğiyle durduruldu. Faz 1–3 kaynakları, belgeler ve doğrulama kanıtları ilk Git teslimine dahil edildi; gizli ayarlar ve geçici dosyalar dışarıda tutuldu.
 
@@ -115,9 +126,9 @@ Akış ve oluşturma formu da 360 px genişlikte taşmadı. Diğer kanıtlar: [A
 
 ## Kalan işler
 
-- **Güvenlik takip işi:** Önceki sohbette paylaşılmış veritabanı parolası, test grubuna açılmadan/yayınlanmadan önce kullanıcı tarafından farklı ve güçlü bir değerle değiştirilmeli; yerel dosya README'deki --update-password komutuyla güncellenmeli. Yeni parola sohbete yazılmamalı. Bu yenileme tamamlanmış sayılmıyor.
+- Parola yenileme takip işi 28 Ekim'de kullanıcı tarafından tamamlandı; bağlantı ve Preview Secret doğrulandı. Yeni parolalar sohbete/Git'e yazılmamalı.
 - Faz 3 tamamlandı; kapsamlı ekran okuyucu/farklı tarayıcı denetimleri ileride ihtiyaç oldukça genişletilebilir.
-- Faz 4: Vercel preview dağıtımı, HTTPS ve gerçek URL üzerinden test grubu akışı.
+- Faz 4 tamamlandı; geçici paylaşım bağlantısının süresi dolarsa yeniden erişim bağlantısı oluşturulabilir. Kalıcı/public production yayını ayrıca kararlaştırılacak.
 - E-posta doğrulama/parola sıfırlama, kapsamlı kötüye kullanım önleme ve geniş katılımlı yayın ayrı planlanacak. Misafir çerezinin silinmesi tekrar oy olanağı sağlayabilir; kişi başına kesin oy garantisi verilmez.
 
 Kalıcı admin hesabı kullanıcı tarafından createsuperuser ile oluşturulabilir. Test sunucuları teslim sonunda durdurulur; README'deki runserver komutu uygulamayı yeniden açar.

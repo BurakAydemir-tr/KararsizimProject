@@ -4,6 +4,10 @@ Hedef: **Kaptan / kaptan4** ekibinde **kararsizim**, yalnızca **Preview** ortam
 Kaynak: https://github.com/BurakAydemir-tr/KararsizimProject
 Hazırlık dalı: `codex/phase4-preview`. Production yayını bu fazın kapsamına dahil değildir.
 
+28 Ekim 2026 teslimi: [Preview](https://kararsizim-gqndxxo2i-kaptan4.vercel.app), READY, uygulama commit'i `ac2822c`. Tam paket 52/52; canlı kayıt/anket/misafir oy/girişte aktarım/aynı tarayıcıda ikinci hesap doğrulandı. Koruma kalıcı olarak açık kalır; onaylanan geçici paylaşım parametresi bu belgeye/Git'e eklenmez.
+
+Doğrulanan yerel CLI sürümü 65.5.0'dır. Eklentiye verilen Vercel ekip izni, GitHub giriş bağlantısı, GitHub uygulamasının depo erişimi ve CLI oturumu farklı yetkilendirmelerdir. Üç preview sırrı kullanıcı onayıyla CLI stdin üzerinden Secret olarak aktarıldı; değerler komut argümanına veya çıktısına konmadı.
+
 ## Uygulama yapılandırması
 
 - Python sürümü `.python-version` ile 3.14; mevcut kesin sürümlü `requirements.txt` korunur.
@@ -57,7 +61,13 @@ Bu değerler sadece doğru projenin **Preview** ortamına kaydedilir. Runtime'a 
 .\.venv\Scripts\python.exe manage.py test accounts polls config.tests scripts --settings=config.test_settings --noinput
 ```
 
-6. Hazırlık dalının kesin commit'ini Preview olarak dağıtın. `--prod`, promotion veya production alias ataması yapmayın.
+6. Hazırlık dalının kesin commit'ini Preview olarak dağıtın. `--prod`, promotion veya production alias ataması yapmayın. Bu teslimde kullanılan komut aşağıdadır; CLI `--target` için kullanımdan kaldırma uyarısı verir ancak Preview seçimi doğrulandı:
+
+```powershell
+npm.cmd exec --yes --package=vercel@65.5.0 -- vercel deploy --target=preview --yes --scope kaptan4
+```
+
+Önce `vercel project inspect --non-interactive` ile yerel `.vercel/project.json` bağlamının Kaptan/kararsizim olduğunu doğrulayın. Kaynak dosyaları `.vercelignore` ile süzülür; sırlar yalnızca Vercel ortam ayarlarından alınır.
 7. Build durumunu ve runtime loglarını inceleyin. Yalnızca `READY` ve gerçek HTTP doğrulaması sonrasında bağlantıyı çalışan teslim olarak paylaşın.
 
 ## Gerçek URL doğrulaması

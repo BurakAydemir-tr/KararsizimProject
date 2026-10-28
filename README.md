@@ -4,7 +4,7 @@ Django ve Supabase PostgreSQL ile geliştirilen anket uygulaması. **Faz 3**: ç
 
 Ürün kararları: [ana belge](docs/KARARSIZIM_PROJE_PLANI_VE_PROMPT.md). Tamamlanan kontroller ve kalan engeller: [proje durumu](docs/PROJE_DURUMU.md).
 
-Faz 4 Vercel önizleme hazırlığı: [dağıtım rehberi](docs/VERCEL_DAGITIM.md). Çevrimiçi dağıtım durumu proje durumunda ayrıca belirtilir. Yerel çalıştırma komutları değişmedi.
+**Faz 4 tamamlandı:** [Vercel önizlemesi](https://kararsizim-gqndxxo2i-kaptan4.vercel.app) READY durumunda. Vercel erişim koruması açıktır; test grubu için kullanıcı onaylı, 23 saatlik paylaşım bağlantısı sohbette verilir. Tam test paketi 52/52 ve gerçek HTTPS üyelik/oylama akışı geçti. [Dağıtım rehberi](docs/VERCEL_DAGITIM.md) ve proje durumu ayrıntıları içerir. Yerel çalıştırma komutları değişmedi.
 
 27 Ekim 2026 itibarıyla Faz 2 şeması Supabase'e uygulandı: 22 migration, 13 özel tablo. Kritik iş kuralları ayrı PostgreSQL test veritabanında, temel akış ayrıca izole tarayıcı ortamında doğrulandı. Ayrıntılı sonuçlar durum belgesindedir.
 
@@ -155,7 +155,7 @@ git check-ignore .env .env.local .venv/Scripts/python.exe
 
 Üye oyları hesap başına, misafir oyları imzalı 180 günlük `HttpOnly` çerez kimliği başına benzersizdir. Çerezi silmek veya başka cihaz kullanmak misafire tekrar oy olanağı sağlayabilir; kesin kişi doğrulaması yoktur. Girişte çakışma varsa hesap oyu korunur, sahipsiz misafir oyu kaldırılır. Oylama ve kapatma aynı anket satırını kilitler. Sonuçlar oy kayıtlarından hesaplanır; canlı güncelleme için sayfayı yenilemek gerekir.
 
-Faz 3 mobil/klavye/kontrast ve JavaScript olmadan temel kullanım kontrolleri tamamlandı; Vercel yayını Faz 4 kapsamındadır. Geniş test grubuna açmadan önce sohbette paylaşılmış veritabanı parolası değiştirilip yerel ayarlar güncellenmelidir. Hata sayfalarının güvenli Türkçe sürümü `DJANGO_DEBUG=false` iken kullanılır; geliştirmedeki DEBUG=true hata ayrıntıları yalnızca yerel kullanım içindir.
+Faz 3 mobil/klavye/kontrast ve JavaScript olmadan temel kullanım kontrolleri ve Faz 4 Vercel önizleme yayını tamamlandı. Daha önce sohbette paylaşılmış veritabanı parolası kullanıcı tarafından yenilendi, yerel bağlantı ve Preview Secret güncellendi. Hata sayfalarının güvenli Türkçe sürümü `DJANGO_DEBUG=false` iken kullanılır; geliştirmedeki DEBUG=true hata ayrıntıları yalnızca yerel kullanım içindir.
 
 ## Faz 3 arayüz kontrolleri ve örnek veri
 

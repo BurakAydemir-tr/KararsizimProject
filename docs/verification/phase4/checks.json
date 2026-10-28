@@ -1,0 +1,104 @@
+{
+  "deployment": {
+    "project": "kararsizim",
+    "team": "kaptan4",
+    "id": "dpl_9V3FACCFPpq9JoumDpVpYs1sFbK3",
+    "url": "https://kararsizim-gqndxxo2i-kaptan4.vercel.app",
+    "environment": "preview",
+    "state": "READY",
+    "region": "fra1",
+    "gitCommit": "ac2822c7d7250f0888a2dad20fb63ea9b6d38dab",
+    "source": "cli",
+    "buildDurationSeconds": 9
+  },
+  "tests": {
+    "passed": 52,
+    "postgresSeparateDatabase": true,
+    "concurrency": 5
+  },
+  "environment": {
+    "previewConfigVariables": 4,
+    "previewSecretVariables": 3,
+    "productionSecretsConfigured": false,
+    "valuesExposed": false
+  },
+  "http": [
+    {
+      "path": "/",
+      "status": 200,
+      "success": true,
+      "keys": [
+        "success",
+        "status",
+        "statusText",
+        "text",
+        "headers"
+      ],
+      "bytes": 5557,
+      "debugLeak": false
+    },
+    {
+      "path": "/static/js/polls.js?v=3",
+      "status": 200,
+      "success": true,
+      "keys": [
+        "success",
+        "status",
+        "statusText",
+        "text",
+        "headers"
+      ],
+      "bytes": 3467,
+      "debugLeak": false
+    },
+    {
+      "path": "/static/admin/css/base.css",
+      "status": 200,
+      "success": true,
+      "keys": [
+        "success",
+        "status",
+        "statusText",
+        "text",
+        "headers"
+      ],
+      "bytes": 22120,
+      "debugLeak": false
+    },
+    {
+      "path": "/faz4-bulunmayan-sayfa/",
+      "status": 404,
+      "success": true,
+      "keys": [
+        "success",
+        "status",
+        "statusText",
+        "text",
+        "headers"
+      ],
+      "bytes": 1859,
+      "notFoundTurkish": true,
+      "debugLeak": false
+    }
+  ],
+  "headers": {
+    "noStore": true,
+    "hsts": "max-age=3600",
+    "nosniff": true,
+    "csrfSecure": true,
+    "sessionAndGuestSecureVerifiedBy": "settings and PostgreSQL regression tests"
+  },
+  "runtime": {
+    "errorLogEntries": 0,
+    "window": "30m",
+    "environment": "preview"
+  },
+  "access": {
+    "permanentProtectionDisabled": false,
+    "temporaryShareApprovedByUser": true,
+    "temporaryShareDurationHours": 23
+  },
+  "limitations": [
+    "Native curl/urllib TLS connection reset; live browser and authenticated Vercel fetch were used instead."
+  ]
+}

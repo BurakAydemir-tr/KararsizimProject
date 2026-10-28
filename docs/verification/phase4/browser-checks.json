@@ -1,0 +1,26 @@
+{
+  "base": "https://kararsizim-gqndxxo2i-kaptan4.vercel.app",
+  "signup": true,
+  "create": true,
+  "guestVote": true,
+  "reloadKeepsSingleVote": true,
+  "loginMergesGuestVote": true,
+  "sameBrowserSecondAccountIndependent": true,
+  "twoVotesFiftyFifty": true,
+  "emailNotPublic": true,
+  "widths": [
+    {
+      "scrollWidth": 345,
+      "width": 360
+    },
+    {
+      "scrollWidth": 753,
+      "width": 768
+    },
+    {
+      "scrollWidth": 1265,
+      "width": 1280
+    }
+  ],
+  "applicationConsoleEntries": 0
+}
