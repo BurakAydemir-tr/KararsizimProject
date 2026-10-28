@@ -1,0 +1,15 @@
+{
+  "tests": 47,
+  "main_test_run": 45,
+  "additional_demo_tests": 2,
+  "final_targeted_tests": 5,
+  "concurrency_tests": 5,
+  "pending_migrations": 0,
+  "remaining_test_databases": 0,
+  "servers": {
+    "8000": "stopped",
+    "8001": "stopped"
+  },
+  "schema_changed": false,
+  "application_data_modified_by_phase3": false
+}

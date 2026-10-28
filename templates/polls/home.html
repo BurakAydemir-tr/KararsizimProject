@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="eyebrow"><span class="little-star" aria-hidden="true">✦</span> KÜÇÜK KARARLAR, FARKLI FİKİRLER</p>
+    <h1 id="hero-title">Aklındaki soruyu<br><span>topluluğa sor.</span></h1>
+    <p class="hero-description">Film mi, dışarıda bir akşam mı? Bazen tek ihtiyacın<br class="desktop-break"> başka bir bakış açısı. Kararsız kaldığında, bir de bize sor.</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="{% url 'polls:create' %}"><span aria-hidden="true">＋</span> Anket oluştur</a>
+      <a class="text-link" href="#anketler">Etrafına bir bak <span aria-hidden="true">↓</span></a>
+    </div>
+    <p class="hero-footnote"><span aria-hidden="true">✓</span> Oylamak için üye olmana gerek yok.</p>
+  </div>
+  <div class="hero-art" aria-label="Anket görünümüne ait etkileşimsiz bir örnek">
+    <span class="art-star star-one" aria-hidden="true">✳</span>
+    <span class="art-star star-two" aria-hidden="true">✦</span>
+    <div class="floating-note" aria-hidden="true">Bir de bize sor! <span>↘</span></div>
+    <div class="example-poll">
+      <div class="example-top"><span class="example-avatar" aria-hidden="true">?</span><span>Günün küçük kararsızlığı</span><span class="example-badge">ÖRNEK</span></div>
+      <p class="example-question">Bu akşam<br>ne yapsam?</p>
+      <div class="example-option"><span class="option-icon" aria-hidden="true">🎬</span> Sinemaya gitsem <span class="radio-decoration" aria-hidden="true"></span></div>
+      <div class="example-option"><span class="option-icon" aria-hidden="true">🍝</span> Yeni bir yer denesem <span class="radio-decoration" aria-hidden="true"></span></div>
+      <div class="example-caption"><span aria-hidden="true">↗</span> Her fikir yeni bir ihtimal.</div>
+    </div>
+    <div class="small-note"><span aria-hidden="true">✧</span> Karar senin, fikirler hepimizin.</div>
+  </div>
+</section>
+
+<section id="anketler" class="feed" aria-labelledby="feed-title">
+  <div class="section-header">
+    <div><p class="section-kicker">TOPLULUKTA NELER VAR?</p><h2 id="feed-title">Kararsızlık köşesi<span aria-hidden="true"> ✦</span></h2></div>
+    <span class="sort-label"><span aria-hidden="true">↓</span> En yeniler</span>
+  </div>
+  {% if page_obj.object_list %}{% include "polls/list.html" %}
+  {% else %}<div class="empty-state">
+    <div class="empty-illustration" aria-hidden="true">
+      <span class="empty-card card-back"></span>
+      <span class="empty-card card-front"><span>?</span><i></i><i></i></span>
+      <span class="empty-spark">✦</span>
+    </div>
+    <h3>Henüz anket yok. İlk soruyu sen sor!</h3>
+    <p>Aklındaki soruyu paylaş, birlikte karar verelim.</p>
+    <a class="button button-primary" href="{% url 'polls:create' %}">Anket oluştur</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+

@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% load static %}{% block title %}{{ poll.question }} — Kararsızım{% endblock %}
+{% block content %}<article class="panel detail-panel"><a class="inline-link" href="{% url 'polls:home' %}">← Keşfet</a>
+<p class="poll-meta">@{{ poll.author.username }} · {{ poll.created_at|date:"d.m.Y H:i" }} · {{ total }} oy</p><h1>{{ poll.question }}</h1>
+{% if poll.description %}<p class="description">{{ poll.description|linebreaksbr }}</p>{% endif %}
+{% if not poll.is_open %}<p class="notice closed-notice">Bu anketin oylaması sona erdi. Sonuçları inceleyebilirsin.</p>{% endif %}
+{% if own_vote %}<p class="notice">Bu ankete oy verdin. Seçimin: <strong>{{ own_vote.choice.text }}</strong></p>{% endif %}
+{% if show_results %}<section aria-label="Anket sonuçları"><h2>Sonuçlar</h2>
+{% for choice in choices %}<div class="result-row"><div><span>{{ choice.text }}{% if own_vote.choice_id == choice.id %} ✓ Senin oyun{% endif %}</span><strong>{{ choice.vote_count }} oy · %{{ choice.percent }}</strong></div><progress max="100" value="{{ choice.percent }}" aria-label="{{ choice.text }}: yüzde {{ choice.percent }}"></progress></div>{% endfor %}
+{% if not total %}<p class="muted">Henüz oy yok. İlk fikir senden gelsin.</p>{% endif %}</section>
+{% if poll.is_open and not own_vote %}<a class="inline-link" href="{% url 'polls:detail' poll.pk %}">Seçeneklere dön ve oy ver</a>{% endif %}
+{% else %}<form method="post" action="{% url 'polls:vote' poll.pk %}" data-vote-form>{% csrf_token %}<fieldset><legend>Sen hangisini seçerdin?</legend>
+{% for choice in choices %}<label class="vote-option"><input type="radio" name="choice" value="{{ choice.pk }}" required><span>{{ choice.text }}</span></label>{% endfor %}
+</fieldset><p class="form-note" id="vote-help">Oy vermek için bir seçenek seç. Gönderdiğin oyu değiştiremezsin.</p><button class="button button-primary" type="submit" aria-describedby="vote-help" data-pending-label="Oyun kaydediliyor…">Oy ver</button></form><a class="inline-link results-link" href="?sonuclar=1">Sonuçları gör</a>{% endif %}
+{% if can_manage %}<div class="owner-actions">{% if poll.is_open %}<a href="{% url 'polls:confirm' poll.pk 'close' %}">Oylamayı kapat</a>{% endif %}<a href="{% url 'polls:confirm' poll.pk 'remove' %}">Anketi kaldır</a></div>{% endif %}
+</article>{% endblock %}

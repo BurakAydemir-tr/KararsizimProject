@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Anketlerim — Kararsızım{% endblock %}
+{% block content %}<section class="feed"><div class="section-header"><h1>Anketlerim</h1><a class="button button-primary" href="{% url 'polls:create' %}">Anket oluştur</a></div>
+{% if page_obj.object_list %}{% include "polls/list.html" with managing=True %}{% else %}<div class="empty-state"><h2>Henüz bir anket oluşturmadın.</h2><p>İlk sorunu paylaş!</p></div>{% endif %}
+</section>{% endblock %}

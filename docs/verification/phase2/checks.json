@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-27",
+  "phase": 2,
+  "tests_passed": 42,
+  "concurrency_tests": 5,
+  "test_database": "isolated PostgreSQL; destroyed after each run",
+  "remaining_test_databases": 0,
+  "application_database_rows": {
+    "users": 0,
+    "polls": 0,
+    "votes": 0
+  },
+  "http_checks": {
+    "/": {
+      "status": 200,
+      "content_type": "text/html"
+    },
+    "/uye-ol/": {
+      "status": 200,
+      "content_type": "text/html"
+    },
+    "/giris/": {
+      "status": 200,
+      "content_type": "text/html"
+    },
+    "/admin/login/": {
+      "status": 200,
+      "content_type": "text/html"
+    },
+    "/static/css/style.css?v=2": {
+      "status": 200,
+      "content_type": "text/css"
+    },
+    "/static/js/polls.js": {
+      "status": 200,
+      "content_type": "application/javascript"
+    }
+  },
+  "test_settings_rejects_non_test_commands": true,
+  "configured_db_password_in_unignored_files": false,
+  "browser_flow": "signup/create/guest-vote/login-merge/second-account-vote/results/close/remove in isolated QA database; removed",
+  "responsive_results": [
+    {
+      "width": 360,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 768,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 1280,
+      "horizontal_overflow": false
+    }
+  ]
+}

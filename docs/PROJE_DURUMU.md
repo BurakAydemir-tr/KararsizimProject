@@ -1,0 +1,108 @@
+# Kararsızım — Proje durumu
+
+Son güncelleme: **28 Ekim 2026**. Kapsam: **Faz 3 — Arayüz ve sağlamlaştırma**.
+Ürün referansı: [ana plan](KARARSIZIM_PROJE_PLANI_VE_PROMPT.md). Kurulum ve komutlar: [README](../README.md).
+
+## Teslim durumu
+
+**Faz 3 tamamlandı.** Django/Supabase temeli ve çalışan Faz 2 işlevleri korundu. Formlar, mobil yerleşimler, erişilebilirlik ve durum geri bildirimleri iyileştirildi. Faz 4 başlatılmadı; Vercel yayını yapılmadı.
+
+Kullanıcı, hesap/misafir tekrar oy ve oy aktarımı senaryolarını elle denedi ve çalıştığını doğruladı. Son görsel düzeltmede kapalı anket etiketi açık turuncu zemin/koyu mercan yazıyla ayrıldı; açık anket etiketi mor kaldı. Yerel sunucu kullanıcının isteğiyle durduruldu. Faz 1–3 kaynakları, belgeler ve doğrulama kanıtları ilk Git teslimine dahil edildi; gizli ayarlar ve geçici dosyalar dışarıda tutuldu.
+
+## Faz 3 değişiklikleri ve doğrulamalar
+
+- Ortak hata özeti: alan bağlantıları, klavye odağı ve tekrar girişte korunan normal form değerleri. Parolalar yeniden doldurulmaz. Yardım/hata ID'leri ile `aria-describedby` bağlantıları tamamlandı; textarea hata rengi eklendi.
+- Karakter sayaçları, 2–5 seçenek alanı için canlı sayı/sınır bildirimi, kaldırma düğmelerine anlamlı adlar. JavaScript ile gizlenen bir alan hata içeriyorsa görünür tutulur.
+- Gönderimde düğme kilidi ve işlem mesajı; tarayıcı geçmişinden dönüldüğünde düğme ve sayaçlar yenilenir. Veritabanındaki çift oy koruması ayrıca devam eder.
+- Mobil menüde daha rahat dokunma alanları, uzun kullanıcı adı/metin sarma, etkin menü bağlantısı, radyo odağı, sonuç çubukları ve kapatma onayı düzeni. Anketlerim kartlarının başlık seviyesi düzeltildi.
+- Daha önce oy veren kullanıcıya da kapalı anket bilgisi gösterilir; önceki seçimi ayrıca görünür.
+- `seed_demo`: varsayılan kuru çalışma. `--apply`, yalnızca DEBUG=true ve ayrı `_demo` / geçici `test_kararsizim_...` DB'de çalışır; normal `postgres` DB'sini reddeder. Üç örnek anketi çoğaltmadan oluşturur; demo hesabının parolası kullanılamaz. Uygulama veritabanına örnek yüklenmedi.
+- Yeni paket, model veya migration eklenmedi. Oylama/aktarım/izin kuralları değiştirilmedi.
+
+| Kontrol | Sonuç |
+| --- | --- |
+| Test paketi | 45 testlik ana çalıştırma + 2 demo testi başarılı; toplam 47 farklı test |
+| Ek son kontrol | 3 erişilebilirlik + 2 demo testi tekrar başarılı |
+| Kritik kurallar | Mevcut 5 eşzamanlılık testi dahil çift oy, aktarım, yetki, CSRF ve gizlilik kontrolleri geçti |
+| Django / bağımlılıklar | Sistem kontrolü ve pip check başarılı; migration farkı yok |
+| Mobil/masaüstü | Uzun soru + 5 uzun seçenek, sonuç, akış, oluşturma ve kayıt: 360/768/1280 px yatay taşma yok |
+| Klavye | Hata özetinden Enter ile alan odağı; Tab ile sonraki alana geçiş ve görünür odak doğrulandı |
+| JavaScript yüklenmeden | İzole sunucuda uygulama JS dosyası boş yanıtlandı; beş alanlı form → anket oluşturma → oy → sonuç gerçek tarayıcıda geçti |
+| Kontrast | Seçilen 8 temel metin/zemin çifti 4.5:1 üstünde; ölçülen en düşük oran 5.77:1 |
+| Tarayıcı | Misafir oy, girişte aktarım/çakışma, seçenek sınırı, hata odağı, kapatma onayı ve kapalı sonuç ekranı geçti; konsol hatası yok |
+
+Test verileri ayrı geçici PostgreSQL DB'lerinde oluşturuldu. Tarayıcı önizleme DB'si de kapatılıp silindi; normal uygulamadaki hesap ve anketler korundu. Yerel test sunucusu teslim sonunda durduruldu.
+
+Kanıtlar: [tarayıcı ölçümleri](verification/phase3/browser-checks.json), [kontrast](verification/phase3/contrast.json), [masaüstü sonuç](verification/phase3/results-desktop.png), [mobil oluşturma](verification/phase3/create-360.png), [kapalı anket](verification/phase3/closed-360.png), [JS olmadan sonuç](verification/phase3/nojs-results-360.png). `long-vote-*` ve `long-results-*` görselleri üç genişlikte uzun içerik testlerini gösterir. Tüm görseller silinmiş, sentetik önizleme verilerine aittir.
+
+Sınırlar: tam ekran okuyucu ve farklı tarayıcı motorlarıyla kapsamlı erişilebilirlik denetimi yapılmadı. Otomatik tekrar gönderme/ağ zaman aşımında sonuç sorgulama eklenmedi; bağlantı kopmasında sunucu kayıt durumu sayfa yenilenerek kontrol edilir. Yeni performans sorunu görülmediğinden sorgu yapısı korunmuştur. Aşağıdaki Faz 2 sayıları ve ekranlar tarihsel doğrulama kaydıdır.
+
+## Çalışan özellikler
+
+- Kullanıcı adı/e-posta/parola/parola onayıyla kayıt; otomatik oturum açma, kullanıcı adıyla giriş ve CSRF korumalı POST çıkış. Aynı site dışındaki `next` hedefleri reddedilir.
+- Kullanıcı adları normalize edilir; e-posta zorunlu ve büyük/küçük harften bağımsız benzersizdir. Halka açık HTML'de e-posta ve oy veren kimlikleri gösterilmez.
+- Soru 10–200, açıklama en fazla 500, seçenekler 1–100 karakter. 2–5 seçenek; boş ek alanlar atlanır, aynı seçenekler ve altıncı seçenek sunucuda reddedilir. Anket/seçenek kaydı atomiktir.
+- Yeni anketler önce gelecek şekilde tarih/ID sıralı ve 12 kayıtlık sayfalı açık akış; detay, herkese açık sonuçlar ve Anketlerim.
+- İmzalı, HttpOnly, SameSite=Lax, 180 günlük misafir çerezi; HTTPS kullanımında Secure. Veritabanında ham kimlik yerine ayrı anahtarla HMAC özeti tutulur. Geri dönmüş geçerli çerez olmadan misafir oy oluşturulmaz.
+- Üyede anket/hesap, misafirde anket/çerez özeti bazında benzersizlik veritabanında korunur. Aynı tarayıcıdaki farklı hesaplar bağımsız oy verebilir.
+- Giriş ve kayıtta sahipsiz misafir oyları atomik biçimde hesaba bağlanır. Hesabın oyu varsa o korunur, misafir oyu kaldırılır. Bağlanmış oy başka hesaba taşınmaz.
+- Oy verme, kapatma, kaldırma ve admin gizleme aynı anket satırını kilitler. Aktarım kilitleri anket ID sırasıyla alınır. Oy sonuçları Vote satırlarından hesaplanır; ayrı sayaç yoktur.
+- Sahibi için kapatma/kaldırma onay ekranları. Kaldırma kalıcı satır silmek yerine işaretleme yapar. Gizli/kaldırılmış anketin halka açık adresi 404 döndürür.
+- Django admin üzerinden gizleme/kapatma. Yayınlanmış soru ve seçenekler salt okunur; oy ekleme/değiştirme/silme admin'de kapalıdır.
+- Beşe kadar seçenek ekleme/kaldırma ve radio seçilmeden oy düğmesini devre dışı tutma için küçük JavaScript. Normal sunucu formları JavaScript olmadan da çalışır.
+- DEBUG=false iken Türkçe 400/403/404/500 ve CSRF ekranları. CSS sürüm adresi Faz 1 önbelleğinin eski görünümü taşımaması için güncellendi.
+
+## Veritabanı ve güvenlik
+
+- Supabase: Kaptan / kararsizim-dev / Frankfurt, proje ref `kdwncovghqyprwrhwptl`.
+- Çalışma zamanı transaction pooler (6543), migration session pooler (5432); SSL ve psycopg prepared statement/imleç ayarları korunuyor.
+- `polls/0001_initial` ve `polls/0002_protect_poll_tables` uygulandı. Toplam **22 uygulanmış migration**, **13 tablo** var. Bekleyen migration veya model/migration farkı yok.
+- 13/13 tabloda RLS. PUBLIC ve Supabase API rollerinden tablo/sequence izinleri kaldırıldı; anon/authenticated/service_role için beklenmeyen tablo yetkisi **0**, sequence yetkisi **0**.
+- Data API kapalı kalıyor; [27 Ekim panel kanıtı](verification/supabase-data-api-disabled.png).
+- Supabase advisor yalnızca 13 adet **INFO — RLS Enabled No Policy** bildirimi verdi. Bu iç tablolara API erişimi istenmediğinden politika eklenmedi; Django tablo sahibi üzerinden çalışır. [Bildirimin açıklaması](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy).
+- Faz 2 otomatik test tesliminde uygulama DB'si boştu. Sonraki kullanıcı isteğiyle normal deneme hesabı açıldı ve kullanıcı kendi testlerini yaptı; önceki sıfır sayıları güncel veri sayısı değildir. Faz 3 testleri bu verilere yazmadı.
+
+## Doğrulamalar
+
+| Kontrol | Sonuç |
+| --- | --- |
+| Django sistem kontrolü | Sorun yok |
+| Model/migration tutarlılığı | No changes detected |
+| Uygulama DB migration kontrolü | Bekleyen migration yok |
+| Tam test paketi | **42/42 geçti**, ayrı PostgreSQL DB |
+| Eşzamanlı testler | Aynı misafir/üye için çift oy, oy/kapatma yarışı, aktarım/üye oyu yarışı, iki hesabın aynı misafir oyunu sahiplenmesi geçti |
+| Temel iş kuralları | Kayıt/giriş, normalizasyon, parola hash'i, sınırlar, CSRF, yetki, gizlilik, sonuçlar, admin salt okunurluğu ve gerçek DB kısıtları geçti |
+| Liste performansı | Misafir akışında 12 kart için 2 sorgu; kart başına sorgu yok |
+| Bağımlılıklar | pip check başarılı; yeni paket eklenmedi |
+| Gizli dosyalar | .env, .env.local, .venv ve .idea Git dışında |
+
+Makine tarafından okunabilir özet: [checks.json](verification/phase2/checks.json). Normal uygulamada ana sayfa, kayıt, giriş, admin giriş, CSS ve JavaScript HTTP 200 döndü. Test ayarının test dışındaki komutları reddettiği ve kalan geçici test veritabanı sayısının 0 olduğu ayrıca kontrol edildi.
+
+`config.test_settings` her çalıştırmada yeni `test_kararsizim_<rastgele>` veritabanı oluşturur, migration'ları oraya uygular, sonunda siler. `manage.py test` dışındaki kullanımı engellenir. Ayrı DB için doğrudan PostgreSQL/CREATEDB erişimi gerekir; isteğe bağlı DATABASE_TEST_ADMIN_URL desteklenir. Test ayarı normal uygulamada kullanılmaz.
+
+Tarayıcı doğrulaması da ayrı geçici PostgreSQL veritabanında yapıldı: kayıt, üç seçenekli anket, seçenek ekleme sınırı/kaldırma, misafir oy, girişte sahiplenme, aynı tarayıcıda ikinci hesapla ikinci oy, yüzde 50/50 sonuç, sahibin onayla kapatması ve kaldırması doğrulandı. Tarayıcı test DB'si de temizlendi; deneme hesabı veya anket bırakılmadı.
+
+| Sonuç ekranı | Yatay taşma | Kanıt |
+| --- | --- | --- |
+| 360 px | Yok | [Mobil](verification/phase2/results-360.png) |
+| 768 px | Yok | [Tablet](verification/phase2/results-768.png) |
+| 1280 px | Yok | [Masaüstü](verification/phase2/results-1280.png) |
+
+Akış ve oluşturma formu da 360 px genişlikte taşmadı. Diğer kanıtlar: [Akış](verification/phase2/feed.png), [mobil oluşturma](verification/phase2/create-mobile.png), [Anketlerim](verification/phase2/my-polls.png). Görsellerdeki hesaplar ve anket yalnızca silinmiş izole test ortamına aittir. Son menü değişikliğinden sonra normal uygulamanın [ana sayfası](verification/phase2/home-live-mobile.png) ve [kayıt formu](verification/phase2/signup-mobile.png) da 360 px genişlikte tekrar doğrulandı.
+
+## Önceki temelden korunanlar ve düzeltmeler
+
+- Python 3.14.8, Django 5.2.18 LTS, django-environ 0.14.0, psycopg/binary 3.3.6; asgiref 3.12.1, sqlparse 0.6.0, tzdata 2026.5.
+- Özel AbstractUser, admin entegrasyonu, ortam yardımcısı, açık zemin/mor/mint/mercan tasarım korundu.
+- Yinelenen veya geçersiz kullanıcı adıyla form doğrulamasında normalize_username(None) hatası düzeltildi. Yinelenen e-posta alanına anlaşılır Türkçe hata eklendi.
+- Boş POST formlarının doğrulama hatalarını göstermesi sağlandı; toplu oy sayımı sonrası akış sıralaması açıkça tarih/ID olarak sabitlendi.
+- Yeni bağımlılık, frontend framework, ayrı API veya arka plan servisi eklenmedi.
+
+## Kalan işler
+
+- **Güvenlik takip işi:** Önceki sohbette paylaşılmış veritabanı parolası, test grubuna açılmadan/yayınlanmadan önce kullanıcı tarafından farklı ve güçlü bir değerle değiştirilmeli; yerel dosya README'deki --update-password komutuyla güncellenmeli. Yeni parola sohbete yazılmamalı. Bu yenileme tamamlanmış sayılmıyor.
+- Faz 3 tamamlandı; kapsamlı ekran okuyucu/farklı tarayıcı denetimleri ileride ihtiyaç oldukça genişletilebilir.
+- Faz 4: Vercel preview dağıtımı, HTTPS ve gerçek URL üzerinden test grubu akışı.
+- E-posta doğrulama/parola sıfırlama, kapsamlı kötüye kullanım önleme ve geniş katılımlı yayın ayrı planlanacak. Misafir çerezinin silinmesi tekrar oy olanağı sağlayabilir; kişi başına kesin oy garantisi verilmez.
+
+Kalıcı admin hesabı kullanıcı tarafından createsuperuser ile oluşturulabilir. Test sunucuları teslim sonunda durdurulur; README'deki runserver komutu uygulamayı yeniden açar.

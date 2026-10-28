@@ -1,0 +1,91 @@
+{
+  "widthChecks": [
+    {
+      "screen": "long-vote",
+      "scrollWidth": 345,
+      "width": 360
+    },
+    {
+      "screen": "long-vote",
+      "scrollWidth": 753,
+      "width": 768
+    },
+    {
+      "screen": "long-vote",
+      "scrollWidth": 1265,
+      "width": 1280
+    },
+    {
+      "screen": "long-results",
+      "scrollWidth": 345,
+      "width": 360
+    },
+    {
+      "screen": "long-results",
+      "scrollWidth": 753,
+      "width": 768
+    },
+    {
+      "screen": "long-results",
+      "scrollWidth": 1265,
+      "width": 1280
+    },
+    {
+      "screen": "confirm",
+      "scrollWidth": 360,
+      "width": 360
+    },
+    {
+      "screen": "feed",
+      "scrollWidth": 345,
+      "width": 360
+    },
+    {
+      "screen": "create",
+      "scrollWidth": 345,
+      "width": 360
+    },
+    {
+      "screen": "feed",
+      "scrollWidth": 753,
+      "width": 768
+    },
+    {
+      "screen": "create",
+      "scrollWidth": 753,
+      "width": 768
+    },
+    {
+      "screen": "feed",
+      "scrollWidth": 1265,
+      "width": 1280
+    },
+    {
+      "screen": "create",
+      "scrollWidth": 1265,
+      "width": 1280
+    },
+    {
+      "screen": "signup",
+      "scrollWidth": 345,
+      "width": 360
+    },
+    {
+      "screen": "signup",
+      "scrollWidth": 753,
+      "width": 768
+    },
+    {
+      "screen": "signup",
+      "scrollWidth": 1265,
+      "width": 1280
+    }
+  ],
+  "keyboardErrorLink": true,
+  "optionLimit": true,
+  "guestVote": true,
+  "loginMerge": true,
+  "noJavaScriptCreateVote": true,
+  "closeConfirmation": true,
+  "consoleErrors": 0
+}

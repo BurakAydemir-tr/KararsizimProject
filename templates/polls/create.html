@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% load static %}
+{% block title %}Anket oluştur — Kararsızım{% endblock %}
+{% block content %}<section class="panel form-panel"><p class="eyebrow">FİKİRLERİ TOPLAYALIM</p><h1>Aklında ne var?</h1>
+<p class="muted">Sorunu yaz, 2–5 seçenek ekle.</p>
+<form method="post" data-poll-form novalidate>{% csrf_token %}
+{% include "components/form_errors.html" %}
+{% for field in form %}<div class="form-field" {% if forloop.counter > 2 %}data-option-row{% endif %}>
+{% include "components/field.html" %}
+{% if forloop.counter > 4 %}<button type="button" class="remove-option inline-link" hidden>Bu seçeneği kaldır</button>{% endif %}
+</div>{% endfor %}
+<button class="button button-secondary" type="button" data-add-option hidden>Seçenek ekle</button>
+<p class="form-note" role="status" data-option-status></p>
+<p class="form-note">En az iki alanı doldur. Yayınlandıktan sonra soru ve seçenekleri değiştiremezsin.</p>
+<button class="button button-primary" type="submit" data-pending-label="Yayınlanıyor…">Anketi yayınla</button></form></section>{% endblock %}

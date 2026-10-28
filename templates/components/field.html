@@ -1,0 +1,4 @@
+{{ field.label_tag }}{{ field }}
+{% if field.help_text %}<div id="{{ field.auto_id }}_helptext" class="help-text">{{ field.help_text|safe }}</div>{% endif %}
+{{ field.errors }}
+{% if field.field.max_length and not field.field.widget.input_type == 'password' %}<p class="character-count" data-character-count hidden aria-hidden="true"></p>{% endif %}

@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Anket yönetimi — Kararsızım{% endblock %}
+{% block content %}<section class="panel form-panel"><h1>{% if action == 'close' %}Oylama kapatılsın mı?{% else %}Anket kaldırılsın mı?{% endif %}</h1><p>{{ poll.question }}</p>
+<p class="muted">{% if action == 'close' %}Yeni oy kabul edilmeyecek. Mevcut sonuçlar görünmeye devam edecek.{% else %}Anket herkese açık akıştan kaldırılacak. Bu işlem için geri yükleme ekranı yok.{% endif %}</p>
+<form class="confirm-actions" method="post" action="{% if action == 'close' %}{% url 'polls:close' poll.pk %}{% else %}{% url 'polls:remove' poll.pk %}{% endif %}">{% csrf_token %}<button type="submit" class="button button-primary" data-pending-label="İşlemin tamamlanıyor…">Evet, {% if action == 'close' %}oylamayı kapat{% else %}anketi kaldır{% endif %}</button><a class="button button-secondary" href="{% url 'polls:mine' %}">Vazgeç</a></form></section>{% endblock %}

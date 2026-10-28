@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-27",
+  "settings": "config.settings",
+  "checks": {
+    "/": {
+      "status": 200,
+      "content_type": "text/html",
+      "bytes": 4824
+    },
+    "/static/css/style.css": {
+      "status": 200,
+      "content_type": "text/css",
+      "bytes": 10303
+    },
+    "/admin/login/": {
+      "status": 200,
+      "content_type": "text/html",
+      "bytes": 4191,
+      "csrf_form_present": true
+    }
+  }
+}

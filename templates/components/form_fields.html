@@ -1,0 +1,4 @@
+{% include "components/form_errors.html" %}
+{% for field in form %}<div class="form-field{% if field.errors %} has-error{% endif %}">
+{% include "components/field.html" %}
+</div>{% endfor %}

@@ -1,0 +1,50 @@
+{% load static %}
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Kararsız kaldığında topluluğa sor. Günlük kararlar için farklı fikirler, tek bir yerde.">
+  <meta name="theme-color" content="#6D28D9">
+  <title>{% block title %}Kararsızım — Bir de bize sor.{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=4">
+  <script src="{% static 'js/polls.js' %}?v=3" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">İçeriğe geç</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="{% url 'polls:home' %}" aria-label="Kararsızım ana sayfa">
+      <span class="brand-icon" aria-hidden="true">k<span>?</span></span>
+      <span>kararsızım<span class="brand-dot">.</span></span>
+    </a>
+    <nav class="nav" aria-label="Ana menü">
+      <a class="nav-link" href="{% url 'polls:home' %}"{% if request.resolver_match.url_name == 'home' %} aria-current="page"{% endif %}>Keşfet</a>
+      <a class="nav-link" href="{% url 'polls:create' %}"{% if request.resolver_match.url_name == 'create' %} aria-current="page"{% endif %}>Anket oluştur</a>
+      <div class="account-actions">
+        {% if user.is_authenticated %}
+        <a class="nav-link" href="{% url 'polls:mine' %}"{% if request.resolver_match.url_name == 'mine' %} aria-current="page"{% endif %}>Anketlerim</a>
+        <span class="nav-username">@{{ user.username }}</span>
+        <form method="post" action="{% url 'accounts:signout' %}">{% csrf_token %}<button class="button button-quiet" type="submit">Çıkış yap</button></form>
+        {% else %}
+        <a class="button button-quiet" href="{% url 'accounts:signin' %}">Giriş yap</a>
+        <a class="button button-primary button-small" href="{% url 'accounts:signup' %}">Üye ol <span aria-hidden="true">↗</span></a>
+        {% endif %}
+      </div>
+    </nav>
+  </div>
+</header>
+<main id="main" class="container" tabindex="-1">
+{% if messages %}<div class="messages" aria-live="polite">{% for message in messages %}<p class="message {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
+{% block content %}{% endblock %}
+</main>
+<footer class="site-footer container">
+  <span class="footer-name">kararsızım<span>.</span></span>
+  <p>Bir soru. Birkaç seçenek. Bir sürü bakış açısı.</p>
+  <span class="footer-note">Birlikte karar vermek güzel.</span>
+</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>
+

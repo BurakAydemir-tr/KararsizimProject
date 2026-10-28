@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{% if signup %}Üye ol{% else %}Giriş yap{% endif %} — Kararsızım{% endblock %}
+{% block content %}<section class="panel form-panel">
+<p class="eyebrow">BİR DE BİZE SOR</p><h1>{% if signup %}Aramıza katıl.{% else %}Tekrar merhaba.{% endif %}</h1>
+<p class="muted">{% if signup %}Anketlerinde kullanıcı adın görünür. E-posta adresin diğer kullanıcılara gösterilmez.{% else %}Kullanıcı adın ve parolanla giriş yap.{% endif %}</p>
+<form method="post" novalidate>{% csrf_token %}<input type="hidden" name="next" value="{{ next }}">
+{% include "components/form_fields.html" %}
+<p class="form-note">Bu tarayıcıdaki sahipsiz misafir oyları giriş yapılan hesaba bağlanır. Hesap zaten oy verdiyse hesap oyu korunur.</p>
+<button class="button button-primary" type="submit" data-pending-label="{% if signup %}Hesabın oluşturuluyor…{% else %}Giriş yapılıyor…{% endif %}">{% if signup %}Üye ol{% else %}Giriş yap{% endif %}</button></form>
+<p>{% if signup %}Hesabın var mı? <a class="inline-link" href="{% url 'accounts:signin' %}?next={{ next|urlencode }}">Giriş yap</a>{% else %}Yeni misin? <a class="inline-link" href="{% url 'accounts:signup' %}?next={{ next|urlencode }}">Üye ol</a>{% endif %}</p>
+</section>{% endblock %}
