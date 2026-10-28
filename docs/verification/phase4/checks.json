@@ -99,6 +99,7 @@
     "temporaryShareDurationHours": 23
   },
   "limitations": [
-    "Native curl/urllib TLS connection reset; live browser and authenticated Vercel fetch were used instead."
+    "Native curl/urllib TLS connection reset; live browser and authenticated Vercel fetch were used instead.",
+    "After successful browser flows, the final in-app browser reopen also returned ERR_CONNECTION_RESET. Vercel fetch still returned HTTP 200; intermittent client/network access remains unresolved."
   ]
 }
