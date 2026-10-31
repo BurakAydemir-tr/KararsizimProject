@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "polls.apps.PollsConfig",
 ]
 MIDDLEWARE = [
+    "config.monitoring.ErrorMonitoringMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -71,4 +72,8 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 LOGIN_URL = "accounts:signin"
 CSRF_FAILURE_VIEW = "config.views.csrf_failure"
+TRUST_VERCEL_PROXY = False
+ABUSE_LIMITS_ENABLED = True
+ABUSE_LIMITS = {"signin": (20, 300), "signup": (5, 3600), "create": (10, 3600),
+                "vote": (60, 60), "report": (10, 3600), "delete_account": (3, 3600)}
 

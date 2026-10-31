@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}Hesabımı sil — Kararsızım{% endblock %}
+{% block content %}<section class="panel form-panel"><h1>Hesabını kalıcı olarak sil</h1>
+<p>Hesabın, yayınladığın anketler ve bu anketlerdeki tüm oylar, diğer anketlere verdiğin oylar ve gönderdiğin bildirimler silinir. Sonuçların oy sayıları değişebilir. Bu işlem geri alınamaz.</p>
+<p>Diğer tarayıcılardaki oturumların da hesap silindiğinde geçersiz olur. Hesabına bağlanmamış misafir oyları bu işlemle bulunamaz; gizlilik sayfasında ayrı silme ekranı vardır.</p>
+<p>Eski yedek kopyalar anında değişmez. Geri yükleme yapılırsa silme talepleri tekrar uygulanmalıdır.</p>
+<form method="post" novalidate>{% csrf_token %}{% include "components/form_fields.html" %}
+<button class="button button-primary" type="submit">Hesabımı ve verilerimi kalıcı sil</button>
+<a class="inline-link" href="{% url 'polls:mine' %}">Vazgeç</a></form></section>{% endblock %}

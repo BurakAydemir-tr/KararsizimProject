@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#6D28D9">
   <title>{% block title %}Kararsızım — Bir de bize sor.{% endblock %}</title>
   <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=4">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=5">
   <script src="{% static 'js/polls.js' %}?v=3" defer></script>
 </head>
 <body>
@@ -42,7 +42,7 @@
 <footer class="site-footer container">
   <span class="footer-name">kararsızım<span>.</span></span>
   <p>Bir soru. Birkaç seçenek. Bir sürü bakış açısı.</p>
-  <span class="footer-note">Birlikte karar vermek güzel.</span>
+  <a class="inline-link" href="{% url 'privacy' %}">Gizlilik ve çerezler</a>
 </footer>
 {% block scripts %}{% endblock %}
 </body>

@@ -6,6 +6,7 @@ from .environment import env
 
 
 DEBUG = False
+TRUST_VERCEL_PROXY = True
 DATABASE_REQUIRE_VERIFIED_TLS = True
 DATABASES = {"default": database("DATABASE_URL", require_verified_tls=True)}
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])

@@ -1,5 +1,7 @@
 # Kararsızım
 
+**Faz 5:** Hız sınırları, içerik bildirimi/moderasyon, parola onaylı hesap ve misafir oy silme, gizlilik açıklaması, arama ve süreli anketler eklendi. E-posta işlemleri ertelendi. Hata/sağlık takibi ve gerçek geri yükleme provasıyla yedek komutları: [işletim rehberi](docs/FAZ5_ISLETIM.md).
+
 Django ve Supabase PostgreSQL ile geliştirilen anket uygulaması. **Faz 3**: çalışan üyelik/anket/oylama akışının mobil yerleşimleri, erişilebilir form hataları, karakter sayaçları ve işlem geri bildirimleri iyileştirildi. Django templates, HTML/CSS ve küçük bir JavaScript dosyası kullanılır.
 
 Ürün kararları: [ana belge](docs/KARARSIZIM_PROJE_PLANI_VE_PROMPT.md). Tamamlanan kontroller ve kalan engeller: [proje durumu](docs/PROJE_DURUMU.md).

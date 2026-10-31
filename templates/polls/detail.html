@@ -12,4 +12,6 @@
 {% for choice in choices %}<label class="vote-option"><input type="radio" name="choice" value="{{ choice.pk }}" required><span>{{ choice.text }}</span></label>{% endfor %}
 </fieldset><p class="form-note" id="vote-help">Oy vermek için bir seçenek seç. Gönderdiğin oyu değiştiremezsin.</p><button class="button button-primary" type="submit" aria-describedby="vote-help" data-pending-label="Oyun kaydediliyor…">Oy ver</button></form><a class="inline-link results-link" href="?sonuclar=1">Sonuçları gör</a>{% endif %}
 {% if can_manage %}<div class="owner-actions">{% if poll.is_open %}<a href="{% url 'polls:confirm' poll.pk 'close' %}">Oylamayı kapat</a>{% endif %}<a href="{% url 'polls:confirm' poll.pk 'remove' %}">Anketi kaldır</a></div>{% endif %}
+{% if poll.ends_at %}<p class="form-note">Bitiş: {{ poll.ends_at|date:"d.m.Y H:i" }}</p>{% endif %}
+<p><a class="inline-link" href="{% url 'polls:report' poll.pk %}">Bu içeriği bildir</a></p>
 </article>{% endblock %}

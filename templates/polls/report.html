@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}İçerik bildir — Kararsızım{% endblock %}
+{% block content %}<section class="panel form-panel"><h1>İçeriği bildir</h1><p>{{ poll.question }}</p>
+<p class="muted">Bildirimler yönetici tarafından incelenir. Bildirim sayısı tek başına anketi gizlemez.</p>
+<form method="post" novalidate>{% csrf_token %}{% include "components/form_fields.html" %}
+<button class="button button-primary" type="submit">Bildirimi gönder</button></form></section>{% endblock %}

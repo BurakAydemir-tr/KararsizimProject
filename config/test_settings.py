@@ -24,3 +24,5 @@ db["TEST"] = {"NAME": "test_kararsizim_" + uuid.uuid4().hex[:12]}
 db["OPTIONS"]["options"] = "-c lock_timeout=10000 -c statement_timeout=30000"
 # A fresh name prevents accidentally dropping an existing database with --noinput.
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+# Existing functional/query-count tests isolate business rules; dedicated abuse tests enable limits.
+ABUSE_LIMITS_ENABLED = False

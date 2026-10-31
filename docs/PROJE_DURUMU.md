@@ -1,11 +1,26 @@
 # Kararsızım — Proje durumu
 
-Son güncelleme: **28 Ekim 2026**. Kapsam: **Faz 4 — Çalışan Vercel önizlemesi**.
+Son güncelleme: **31 Ekim 2026**. Kapsam: **Faz 5 — E-posta işlemleri hariç küçük grup kullanımı**.
 Ürün referansı: [ana plan](KARARSIZIM_PROJE_PLANI_VE_PROMPT.md). Kurulum ve komutlar: [README](../README.md).
 
-## Teslim durumu
+## Faz 5 — Güncel teslim kapsamı
 
-**Faz 4 tamamlandı.** Django/Supabase temeli ve çalışan işlevler korundu. Vercel Preview yayını READY durumunda; gerçek HTTPS adresinde üyelik ve oylama akışı doğrulandı. Production yayını veya Faz 5 başlatılmadı.
+- E-posta doğrulama, parola sıfırlama ve gerçek e-posta gönderimi kullanıcı isteğiyle ertelendi.
+- Ortak PostgreSQL hız sayaçları ve 429/Retry-After; aynı yazar/soru için 24 saatlik tekrar kontrolü.
+- Üye/misafir içerik bildirimi ve yönetici inceleme kararı; otomatik bildirim sayısıyla gizleme yok.
+- Parola ve açık onayla hesap/veri silme; mevcut tarayıcının sahipsiz misafir oyları için ayrı silme ekranı.
+- Gizlilik/çerez açıklaması, arama ve isteğe bağlı 1 saat/24 saat/7 günlük anketler.
+- Güvenli istek kimliği/hata olayları, admin incelemesi ve salt okunur sağlık URL'si.
+- Uygulama yedeği alındı; ayrı restorecheck DB'ye gerçek geri yükleme, checksum, tablo sayımları ve alan değerleri doğrulandı; geçici DB kaldırıldı.
+- Tam PostgreSQL regresyon paketi 75/75; son eklenen 3 hedefli kontrol de geçti (iki test mevcut paketle ortaktır).
+- Model/migration farkı yok; Django kontrolü ve pip check başarılı. Yeni tablolar RLS/API-rol erişim korumasını aynı migration içinde alır.
+- İşletim ve saklama komutları: [Faz 5 rehberi](FAZ5_ISLETIM.md). Günlük zamanlayıcı, haricî hata alarmı, off-site yedek/PITR veya production alan adı kurulmadı.
+
+Aşağıdaki Faz 4 ve önceki test kayıtları tarihsel teslim bilgileridir.
+
+## Önceki teslim durumu
+
+**Faz 4 tamamlandı.** Django/Supabase temeli ve çalışan işlevler korundu. Vercel Preview yayını READY durumunda; gerçek HTTPS adresinde üyelik ve oylama akışı doğrulandı. Bu tarihsel teslimde production yayını veya Faz 5 başlatılmamıştı.
 
 ## Faz 4 teslimi
 
@@ -129,6 +144,6 @@ Akış ve oluşturma formu da 360 px genişlikte taşmadı. Diğer kanıtlar: [A
 - Parola yenileme takip işi 28 Ekim'de kullanıcı tarafından tamamlandı; bağlantı ve Preview Secret doğrulandı. Yeni parolalar sohbete/Git'e yazılmamalı.
 - Faz 3 tamamlandı; kapsamlı ekran okuyucu/farklı tarayıcı denetimleri ileride ihtiyaç oldukça genişletilebilir.
 - Faz 4 tamamlandı; geçici paylaşım bağlantısının süresi dolarsa yeniden erişim bağlantısı oluşturulabilir. Kalıcı/public production yayını ayrıca kararlaştırılacak.
-- E-posta doğrulama/parola sıfırlama, kapsamlı kötüye kullanım önleme ve geniş katılımlı yayın ayrı planlanacak. Misafir çerezinin silinmesi tekrar oy olanağı sağlayabilir; kişi başına kesin oy garantisi verilmez.
+- E-posta doğrulama/parola sıfırlama ertelendi; daha geniş katılımlı/production yayın, otomatik bakım ve off-site yedek işletimi ayrı planlanacak. Misafir çerezinin silinmesi tekrar oy olanağı sağlayabilir; kişi başına kesin oy garantisi verilmez.
 
 Kalıcı admin hesabı kullanıcı tarafından createsuperuser ile oluşturulabilir. Test sunucuları teslim sonunda durdurulur; README'deki runserver komutu uygulamayı yeniden açar.

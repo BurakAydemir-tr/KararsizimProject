@@ -1,0 +1,3 @@
+{% extends "base.html" %}{% block content %}<section class="panel"><h1>Misafir oylarını sil</h1>
+<p>Bu tarayıcının mevcut kimliğine bağlı, henüz hesaba aktarılmamış oylar kalıcı olarak silinir. Bir hesaba aktarılmış oylar ve başka tarayıcıların oyları etkilenmez. Sonuçların oy sayıları değişir. İşlem geri alınamaz.</p>
+<form method="post">{% csrf_token %}<p><label><input type="checkbox" name="confirm" value="yes" required> Silmeyi onaylıyorum</label></p><button class="button button-primary" type="submit">Misafir oylarımı kalıcı sil</button></form></section>{% endblock %}

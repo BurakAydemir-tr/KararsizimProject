@@ -5,7 +5,7 @@ Hazırlanma tarihi: 20 Ekim 2026
 Son güncelleme: 28 Ekim 2026  
 Hedef: Önce çalışan ve denenebilir bir web uygulaması prototipi, ardından küçük adımlarla geliştirme.
 
-Güncel uygulama durumu ve doğrulamalar: [PROJE_DURUMU.md](PROJE_DURUMU.md). Faz 4 Vercel önizlemesi tamamlandı ve gerçek HTTPS akışı doğrulandı. Faz 5 başlatılmadı. Dağıtım rehberi: [VERCEL_DAGITIM.md](VERCEL_DAGITIM.md).
+Güncel uygulama durumu ve doğrulamalar: [PROJE_DURUMU.md](PROJE_DURUMU.md). Faz 4 Vercel önizlemesi tamamlandı ve gerçek HTTPS akışı doğrulandı. Faz 5, kullanıcı isteğiyle e-posta işlemleri hariç uygulanıyor; güncel kapsam ve işletim sınırları durum belgesindedir. Dağıtım rehberi: [VERCEL_DAGITIM.md](VERCEL_DAGITIM.md).
 
 ## 1. Bu belge nasıl kullanılmalı?
 

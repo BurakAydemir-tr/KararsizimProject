@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm, UsernameField
 from django.core.exceptions import ValidationError
 from .models import User
+from django import forms
 
 
 class NormalizedUsernameField(UsernameField):
@@ -30,6 +31,21 @@ class AdminUserChangeForm(UserChangeForm):
 
 class SignupForm(AdminUserCreationForm):
     pass
+
+
+class DeleteAccountForm(forms.Form):
+    password = forms.CharField(label="Mevcut parolan", widget=forms.PasswordInput)
+    confirm = forms.BooleanField(label="Hesabımın, anketlerimin ve oylarımın kalıcı olarak silinmesini onaylıyorum.")
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_password(self):
+        password = self.cleaned_data["password"]
+        if not self.user.check_password(password):
+            raise ValidationError("Parola doğrulanamadı.")
+        return password
 
 
 class SigninForm(AuthenticationForm):

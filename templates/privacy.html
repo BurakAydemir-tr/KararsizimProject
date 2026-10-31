@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}Gizlilik ve çerezler — Kararsızım{% endblock %}
+{% block content %}<article class="panel"><h1>Gizlilik ve çerezler</h1>
+<p>Kararsızım sınırlı erişimli bir prototiptir. Hassas veya özel bilgi yayınlama.</p>
+<h2>Tutulan bilgiler</h2><p>Üyelikte kullanıcı adı, e-posta ve parolanın güvenli özeti tutulur. Kullanıcı adın ve anketlerin açık olabilir; e-postan ve oy verenlerin kimlikleri halka açık sayfalarda gösterilmez. Yetkili yöneticiler kayıtlara erişebilir.</p>
+<p>Kötüye kullanım sınırları için IP ve işlem kimliklerinin anahtarlı özetleri tutulur; bu tablolarda ham IP saklanmaz. Bildirim nedeni/açıklaması moderasyon içindir; açıklamaya kişisel bilgi koyma.</p>
+<h2>Zorunlu çerezler</h2><ul><li>sessionid: oturum, varsayılan 14 gün.</li><li>csrftoken: form güvenliği, yaklaşık 1 yıl.</li><li>kararsizim_guest: tarayıcı başına misafir oy kimliği, 180 gün. Veritabanında ham çerez yerine anahtarlı özet tutulur.</li></ul>
+<p>Uygulama reklam veya analitik çerezi eklemez. Çerezleri tarayıcından engelleyebilirsin; giriş ve misafir oylama çalışmayabilir. Vercel erişim korumasının çerezleri ayrıdır.</p>
+<h2>Oy politikası</h2><p>Oy sınırı hesap veya tarayıcı kimliği başınadır; kişi başına kesin tek oy garantisi yoktur. Başka cihaz, çerez silme veya yeni hesap sınırı aşabilir. Hız sınırlaması bunu azaltır, tamamen engellemez. Girişte sahipsiz misafir oyları hesaba bağlanır.</p>
+<h2>Saklama ve silme</h2><p>Hesap silme parolayla doğrulanır ve ekranda belirtilen anket/oy/bildirim kayıtlarını kaldırır. Mevcut imzalı kimlikle sahipsiz misafir oyları ayrıca silinebilir. Sadece çerez silmek sunucudaki oy kaydını silmez.</p>
+<p>Süresi dolmuş hız sayaçları, 30 günü geçen hata olayları ve 180 günü geçen sonuçlanmış bildirimler bakım komutuyla temizlenir. Sürekli çalışan zamanlayıcı henüz kurulmamıştır. Yedeklerin saklama ve silme adımları işletim rehberindedir.</p>
+<p>Vercel ve Supabase barındırma hizmetlerinin kendi erişim kayıtları ayrıca olabilir. Uygulamanın hata olay tablosuna parola, form içeriği veya çerez yazılmaz; destek için hata ekranındaki istek kimliği kullanılabilir.</p>
+{% if user.is_authenticated and not user.is_staff %}<p><a class="inline-link" href="{% url 'accounts:delete' %}">Hesabımı ve verilerimi sil</a></p>{% endif %}
+<p><a class="inline-link" href="{% url 'polls:delete_guest' %}">Bu tarayıcının sahipsiz misafir oylarını sil</a></p>
+</article>{% endblock %}

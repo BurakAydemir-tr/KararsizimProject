@@ -31,7 +31,9 @@
     <div><p class="section-kicker">TOPLULUKTA NELER VAR?</p><h2 id="feed-title">Kararsızlık köşesi<span aria-hidden="true"> ✦</span></h2></div>
     <span class="sort-label"><span aria-hidden="true">↓</span> En yeniler</span>
   </div>
+  <form method="get" class="search-form" role="search"><label for="poll-search">Anket ara</label><input id="poll-search" type="search" name="q" maxlength="100" value="{{ query }}"><button class="button button-secondary" type="submit">Ara</button>{% if query %}<a class="inline-link" href="{% url 'polls:home' %}#anketler">Temizle</a>{% endif %}</form>
   {% if page_obj.object_list %}{% include "polls/list.html" %}
+  {% elif query %}<div class="empty-state"><h3>Aramana uygun anket bulunamadı.</h3><p>Başka bir kelimeyle tekrar dene.</p></div>
   {% else %}<div class="empty-state">
     <div class="empty-illustration" aria-hidden="true">
       <span class="empty-card card-back"></span>

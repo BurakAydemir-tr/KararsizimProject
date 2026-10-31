@@ -7,6 +7,12 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_http_methods, require_POST
 from polls.services import merge_guest_votes
 from .forms import SignupForm, SigninForm
+from .forms import DeleteAccountForm
+from .services import delete_account
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.db.models.deletion import ProtectedError
+from polls.abuse import rate_limit
 
 
 def next_url(request):
@@ -17,6 +23,7 @@ def next_url(request):
 
 
 @require_http_methods(["GET", "POST"])
+@rate_limit("signup")
 def signup(request):
     if request.user.is_authenticated:
         return redirect("polls:home")
@@ -36,6 +43,7 @@ def signup(request):
 
 
 @require_http_methods(["GET", "POST"])
+@rate_limit("signin")
 def signin(request):
     if request.user.is_authenticated:
         return redirect("polls:home")
@@ -53,3 +61,24 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect("polls:home")
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+@rate_limit("delete_account")
+def delete(request):
+    if request.user.is_staff:
+        raise PermissionDenied
+    form = DeleteAccountForm(request.user, request.POST if request.method == "POST" else None)
+    if request.method == "POST" and form.is_valid():
+        try:
+            delete_account(request.user)
+        except ProtectedError:
+            form.add_error(None, "Eşzamanlı bir işlem oldu. Lütfen tekrar dene.")
+        else:
+            logout(request)
+            messages.success(request, "Hesabın ve uygulamadaki ilişkili verilerin silindi.")
+            response = redirect("polls:home")
+            response.delete_cookie("kararsizim_guest", samesite="Lax")
+            return response
+    return render(request, "accounts/delete.html", {"form": form})

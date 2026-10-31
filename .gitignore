@@ -12,4 +12,5 @@ staticfiles/
 .vercel/
 .idea/
 *.log
+.backups/
 

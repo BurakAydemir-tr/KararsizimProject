@@ -4,6 +4,10 @@
   --coral:#ff785a; --mint:#b8f2df; --border:#e5e3ef;
   --radius:20px; --content:1100px;
 }
+.search-form {display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.search-form input {flex:1;min-width:120px;padding:12px;border:1px solid var(--border);border-radius:10px;font:inherit}
+.form-field select {width:100%;min-height:48px;padding:12px;font:inherit;border:1px solid #c3bfd0;border-radius:10px;background:white}
+.form-field input[type=checkbox] {display:inline;width:20px;min-height:20px}
 * {box-sizing:border-box}
 html {scroll-behavior:smooth;scroll-padding-top:24px}
 body {margin:0;background:var(--background);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.6}

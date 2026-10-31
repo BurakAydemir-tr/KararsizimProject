@@ -4,9 +4,9 @@
 <p class="muted">Sorunu yaz, 2–5 seçenek ekle.</p>
 <form method="post" data-poll-form novalidate>{% csrf_token %}
 {% include "components/form_errors.html" %}
-{% for field in form %}<div class="form-field" {% if forloop.counter > 2 %}data-option-row{% endif %}>
+{% for field in form %}<div class="form-field" {% if field.name|slice:":7" == 'option_' %}data-option-row{% endif %}>
 {% include "components/field.html" %}
-{% if forloop.counter > 4 %}<button type="button" class="remove-option inline-link" hidden>Bu seçeneği kaldır</button>{% endif %}
+{% if field.name == 'option_3' or field.name == 'option_4' or field.name == 'option_5' %}<button type="button" class="remove-option inline-link" hidden>Bu seçeneği kaldır</button>{% endif %}
 </div>{% endfor %}
 <button class="button button-secondary" type="button" data-add-option hidden>Seçenek ekle</button>
 <p class="form-note" role="status" data-option-status></p>

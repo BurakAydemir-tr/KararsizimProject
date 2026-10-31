@@ -1,0 +1,15 @@
+{
+  "new_tables_rls": {
+    "polls_errorevent": true,
+    "polls_ratelimit": true,
+    "polls_report": true
+  },
+  "api_role_table_grants": 0,
+  "preexisting_application_row_counts_preserved": true,
+  "remaining_disposable_databases": 0,
+  "main_regression_tests_passed": 75,
+  "additional_targeted_tests_passed": 3,
+  "backup_restore_checksum_rows_and_fields": "passed",
+  "email_features": "deferred",
+  "production_deployment": false
+}

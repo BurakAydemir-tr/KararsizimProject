@@ -2,13 +2,15 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.paginator import Paginator
-from django.db.models import Count
+from django.db.models import Count, Q
+from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
-from .forms import PollForm, VoteForm
+from .forms import PollForm, VoteForm, ReportForm
+from .abuse import rate_limit
 from .models import Poll, Vote
-from .services import cast_vote, create_poll, manage_poll
+from .services import cast_vote, create_poll, manage_poll, report_poll
 
 
 def cards(queryset, page):
@@ -16,7 +18,11 @@ def cards(queryset, page):
 
 @require_safe
 def home(request):
-    return render(request, "polls/home.html", {"page_obj": cards(Poll.objects.visible(), request.GET.get("sayfa"))})
+    query = request.GET.get("q", "").strip()[:100]
+    polls = Poll.objects.visible()
+    if query:
+        polls = polls.filter(Q(question__icontains=query) | Q(description__icontains=query))
+    return render(request, "polls/home.html", {"page_obj": cards(polls, request.GET.get("sayfa")), "query": query})
 
 
 @require_safe
@@ -40,16 +46,24 @@ def detail(request, pk):
 
 @login_required
 @require_http_methods(["GET", "POST"])
+@rate_limit("create")
 def create(request):
     form = PollForm(request.POST if request.method == "POST" else None)
     if request.method == "POST" and form.is_valid():
-        poll = create_poll(request.user, form.cleaned_data["question"], form.cleaned_data["description"], form.cleaned_data["options"])
-        messages.success(request, "Anketin yayınlandı!")
-        return redirect("polls:detail", pk=poll.pk)
+        duration = form.cleaned_data["duration"]
+        try:
+            poll = create_poll(request.user, form.cleaned_data["question"], form.cleaned_data["description"], form.cleaned_data["options"],
+                               ends_at=timezone.now() + timezone.timedelta(hours=int(duration)) if duration else None)
+        except ValidationError as error:
+            form.add_error(None, error)
+        else:
+            messages.success(request, "Anketin yayınlandı!")
+            return redirect("polls:detail", pk=poll.pk)
     return render(request, "polls/create.html", {"form": form})
 
 
 @require_POST
+@rate_limit("vote")
 def vote(request, pk):
     get_object_or_404(Poll.objects.visible(), pk=pk)
     form = VoteForm(request.POST)
@@ -98,4 +112,33 @@ def remove(request, pk):
     manage_poll(pk, request.user, "remove")
     messages.success(request, "Anket kaldırıldı.")
     return redirect("polls:mine")
+
+
+@require_http_methods(["GET", "POST"])
+@rate_limit("report")
+def report(request, pk):
+    poll = get_object_or_404(Poll.objects.visible(), pk=pk)
+    form = ReportForm(request.POST if request.method == "POST" else None)
+    if request.method == "POST" and form.is_valid():
+        try:
+            report_poll(pk, user=request.user, guest_hash=request.guest_identity_hash, **form.cleaned_data)
+        except ValidationError as error:
+            form.add_error(None, error)
+        else:
+            messages.success(request, "Bildirimin alındı. Yönetici inceleyecek.")
+            return redirect("polls:detail", pk=pk)
+    return render(request, "polls/report.html", {"poll": poll, "form": form})
+
+
+@require_http_methods(["GET", "POST"])
+@rate_limit("delete_account")
+def delete_guest(request):
+    if request.method == "POST" and request.POST.get("confirm") == "yes":
+        if request.guest_identity_hash:
+            Vote.objects.filter(user__isnull=True, guest_identity_hash=request.guest_identity_hash).delete()
+        messages.success(request, "Bu tarayıcı kimliğine bağlı sahipsiz misafir oyları silindi.")
+        response = redirect("privacy")
+        response.delete_cookie("kararsizim_guest", samesite="Lax")
+        return response
+    return render(request, "polls/delete_guest.html")
 
