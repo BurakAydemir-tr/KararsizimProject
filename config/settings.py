@@ -44,7 +44,8 @@ TEMPLATES = [{
     ]},
 }]
 WSGI_APPLICATION = "config.wsgi.application"
-DATABASES = {"default": database("DATABASE_URL")}
+DATABASE_REQUIRE_VERIFIED_TLS = not DEBUG
+DATABASES = {"default": database("DATABASE_URL", require_verified_tls=DATABASE_REQUIRE_VERIFIED_TLS)}
 AUTH_USER_MODEL = "accounts.User"
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},

@@ -1,6 +1,7 @@
 """Environment parsing shared by runtime and migration settings."""
+import os
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 import environ
 from django.core.exceptions import ImproperlyConfigured
@@ -29,7 +30,7 @@ def boolean(name, default=False):
     raise ImproperlyConfigured(f"{name} true veya false olmali.")
 
 
-def database(name):
+def database(name, *, require_verified_tls=True):
     raw = required(name)
     try:
         parsed = urlsplit(raw)
@@ -51,11 +52,28 @@ def database(name):
         raise ImproperlyConfigured(
             "Migration icin transaction pooler yerine session pooler (5432) kullanin."
         )
+    options = config.get("OPTIONS", {}).copy()
+    modes = parse_qs(parsed.query, keep_blank_values=True).get("sslmode", [])
+    if len(modes) > 1:
+        raise ImproperlyConfigured(f"{name}: sslmode yalnizca bir kez belirtilmeli.")
+    mode = modes[0] if modes else options.get("sslmode")
+    valid_modes = {"disable", "allow", "prefer", "require", "verify-ca", "verify-full"}
+    if mode is not None and mode not in valid_modes:
+        raise ImproperlyConfigured(f"{name}: gecersiz sslmode.")
+    if require_verified_tls:
+        if mode is not None and mode != "verify-full":
+            raise ImproperlyConfigured(f"{name}: bu ortamda sslmode=verify-full gerekli.")
+        options["sslmode"] = "verify-full"
+        if not options.get("sslrootcert") and not env.str("PGSSLROOTCERT", default=""):
+            # Keep the default filename ASCII for Windows libpq when run here.
+            options["sslrootcert"] = os.path.relpath(BASE_DIR / "certs" / "supabase-prod-ca-2021.crt")
+    else:
+        # Preserve stronger operator choices while retaining development's TLS floor.
+        options["sslmode"] = mode if mode in {"verify-ca", "verify-full"} else "require"
     config["CONN_MAX_AGE"] = 0
     config["DISABLE_SERVER_SIDE_CURSORS"] = True
     config["OPTIONS"] = {
-        **config.get("OPTIONS", {}),
-        "sslmode": "require",
+        **options,
         "connect_timeout": 10,
         "prepare_threshold": None,
     }

@@ -47,6 +47,27 @@ Bu değerler sadece doğru projenin **Preview** ortamına kaydedilir. Runtime'a 
 
 `config.vercel_settings`, DEBUG'u zorunlu olarak kapatır; Secure oturum/CSRF çerezlerini ve HTTPS yönlendirmesini açar. Vercel'in TLS proxy'sindeki `X-Forwarded-Proto` bilgisi kullanılır. `VERCEL_URL` ve `VERCEL_BRANCH_URL` sadece tam `.vercel.app` hostname kabul eder; tüm `.vercel.app` alanları için joker izin verilmez. Vercel sistem değişkenleri build ve runtime'a açık olmalıdır.
 
+### PostgreSQL TLS patch'i için dağıtım önkoşulu
+
+Vercel ayarları DB bağlantısında da `verify-full` zorunlu tutar. Mevcut
+`DATABASE_URL` içinde `sslmode=require` veya başka zayıf mod varsa dağıtımdan
+önce kaldırın (güvenli varsayılan seçilir) ya da `verify-full` yapın.
+URL'deki sertifika ve channel_binding gibi diğer seçenekler korunur.
+
+Resmî Supabase kök sertifikası `certs/supabase-prod-ca-2021.crt` kaynak paketinde
+bulunur; varsayılan politika build/runtime'da bu dosyayı kullanır. Özel CA
+gerekiyorsa Vercel'e `PGSSLROOTCERT` Config değişkeni olarak dosya yolunu tanımlayın.
+URL'deki `sslrootcert` bu değişkenden
+önceliklidir. Yerel Windows yolu Vercel'de geçerli değildir. Yerel
+`prepare_vercel_env.py` sadece URL'yi kopyalar; CA dosyasını veya PGSSLROOTCERT'i
+deployment'a taşımaz. Sertifika yolunun function paketinde bulunduğunu ayrıca
+kontrol edin. Güvenilen CA kurulumu tamamlanmadan patch'i yayınlamayın.
+
+Yayın öncesi doğrulama: doğru CA/hostname ile bağlantı ve salt okunur `SELECT 1`
+başarılı olmalı; güvenilmeyen CA ve yanlış hostname bağlantıları reddedilmeli.
+Hata olursa doğrulamayı düşürmek yerine CA zincirini, dosya yolunu ve endpoint'i
+düzeltin. Bu patch kendi başına canlı Vercel/Supabase ayarlarını değiştirmez.
+
 Önizlemede HSTS bir saatle sınırlıdır; alt alan adlarına yayılmaz ve preload kaydı istenmez. `check --deploy` bu iki bilinçli tercih için `security.W005` ve `security.W021` uyarıları verir. Gerçek alan adı/production planında yeniden değerlendirilir.
 
 ## Veritabanı ve dağıtım sırası

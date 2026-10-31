@@ -41,6 +41,7 @@ def update_password():
     lines = original.splitlines(keepends=True)
     keys = {"DATABASE_URL": 6543, "DATABASE_MIGRATION_URL": 5432}
     positions = {}
+    connection_queries = {}
     for index, line in enumerate(lines):
         for key, port in keys.items():
             if line.startswith(key + "="):
@@ -60,6 +61,7 @@ def update_password():
                 if not valid:
                     raise SystemExit(f"{key} beklenen projeye ait degil; dosya degistirilmedi.")
                 positions[key] = index
+                connection_queries[key] = parsed.query
     if positions.keys() != keys.keys():
         raise SystemExit(".env icinde iki baglanti adresi gerekli; dosya degistirilmedi.")
 
@@ -72,8 +74,9 @@ def update_password():
         runtime, migration = pooler_urls(password)
     except ValueError as error:
         raise SystemExit(str(error)) from None
-    lines[positions["DATABASE_URL"]] = f"DATABASE_URL={runtime}\n"
-    lines[positions["DATABASE_MIGRATION_URL"]] = f"DATABASE_MIGRATION_URL={migration}\n"
+    for key, uri in (("DATABASE_URL", runtime), ("DATABASE_MIGRATION_URL", migration)):
+        query = connection_queries[key]
+        lines[positions[key]] = f"{key}={uri}{'?' + query if query else ''}\n"
     replacement = target.with_name(f".env.{secrets.token_hex(8)}.tmp")
     try:
         with replacement.open("x", encoding="utf-8") as output:

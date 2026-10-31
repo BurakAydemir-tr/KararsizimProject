@@ -36,8 +36,8 @@ class ConfigureLocalTests(TestCase):
         target = test_target()
         try:
             target.write_text(
-                f"DJANGO_SECRET_KEY=keep-me\nDATABASE_URL={old_runtime}\n"
-                f"DATABASE_MIGRATION_URL={old_migration}\nGUEST_VOTE_HASH_KEY=keep-this\n",
+                f"DJANGO_SECRET_KEY=keep-me\nDATABASE_URL={old_runtime}?sslmode=verify-full&sslrootcert=C%3A%2Froot.crt\n"
+                f"DATABASE_MIGRATION_URL={old_migration}?sslmode=verify-ca\nGUEST_VOTE_HASH_KEY=keep-this\n",
                 encoding="utf-8",
             )
             with patch.object(configure_local, "target", target), patch.object(
@@ -49,6 +49,8 @@ class ConfigureLocalTests(TestCase):
             self.assertIn("GUEST_VOTE_HASH_KEY=keep-this\n", body)
             self.assertNotIn("old_password", body)
             self.assertNotIn("new@password", body)
+            self.assertIn("?sslmode=verify-full&sslrootcert=C%3A%2Froot.crt\n", body)
+            self.assertIn("?sslmode=verify-ca\n", body)
             self.assertEqual(body.count("DATABASE_URL="), 1)
             self.assertEqual(body.count("DATABASE_MIGRATION_URL="), 1)
         finally:

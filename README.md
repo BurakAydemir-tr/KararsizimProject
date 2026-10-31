@@ -73,6 +73,40 @@ Supabase: Kaptan / kararsizim-dev / Frankfurt. Pooler `aws-1-eu-central-1.pooler
 
 Bağlantılar SSL gerektirir. Kalıcı bağlantı, sunucu tarafı imleç ve otomatik prepared statement kapalıdır. Eksik ayarlarda SQLite'a geçilmez; anlaşılır yapılandırma hatası alınır.
 
+### PostgreSQL TLS sunucu doğrulaması
+
+`DJANGO_DEBUG=false` ile runtime ve migration bağlantıları varsayılan olarak
+`sslmode=verify-full` kullanır. URL'de açıkça daha zayıf bir mod varsa ayar hatası
+verilir. `config.vercel_settings`, ortamda DEBUG=true istense bile bu politikayı
+zorunlu tutar. Sertifika hatasında daha zayıf moda otomatik dönüş yoktur.
+
+Yerel `DJANGO_DEBUG=true` geliştirmede mevcut `require` varsayılanı korunur;
+URL'deki `verify-ca` ve `verify-full` değerleri düşürülmez. Development uyumluluğu
+sunucu kimliği doğrulama garantisi değildir. `config.test_settings`, HTTP testleri
+için DEBUG'u kapatsa da DB politikasını başlangıçtaki development/production
+seçiminden alır; varsayılan test sunucusu adresi değiştiğinde doğrulama son
+`db.<project>.supabase.co` adına uygulanır. Gerekirse o endpoint'e uygun
+`DATABASE_TEST_ADMIN_URL` ve CA kullanın.
+
+Supabase için resmî `certs/supabase-prod-ca-2021.crt` dosyası uygulamayla
+birlikte gelir ve doğrulanmış TLS bağlantılarında varsayılan olarak kullanılır.
+Başka sağlayıcı veya özel CA için uygun CA dosyasını çalışma ortamına koyun. Örneğin yerel
+`.env` içinde `PGSSLROOTCERT=C:/certs/provider-root.crt` tanımlanabilir.
+Alternatif olarak bağlantı URL'sine
+`?sslmode=verify-full&sslrootcert=C%3A%2Fcerts%2Fprovider-root.crt` eklenebilir.
+URL'deki `sslrootcert`, `PGSSLROOTCERT` değerinden önceliklidir. Windows libpq
+varsayılan CA yolu `%APPDATA%/postgresql/root.crt` dosyasıdır; açık yol tercih edin.
+CA dosyası herkese açık sertifika içerebilir; özel anahtar veya DB parolası koymayın.
+Parola yenileme yardımcısı artık mevcut URL sorgu seçeneklerini korur.
+
+Pooler ve doğrudan bağlantı farklı sertifika zincirleri kullanabilir. Doğru hostname
+ve CA dosyasını endpoint bazında doğrulayın; IP adresine geçerek veya `require`
+kullanarak doğrulamayı atlamayın. Canlı bağlantının çalıştığı, yalnızca ayar
+testleriyle kanıtlanmış olmaz.
+
+Kaynaklar: [PostgreSQL TLS](https://www.postgresql.org/docs/current/libpq-ssl.html),
+[Supabase SSL bağlantısı](https://supabase.com/docs/guides/database/psql).
+
 ## Migration ve çalıştırma
 
 `.env` hazır olduktan sonra aşağıdaki komutları sırayla çalıştırın:

@@ -13,10 +13,10 @@ DEBUG = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 ALLOWED_HOSTS = ["testserver", "localhost", "127.0.0.1"]
-DATABASES = {"default": database("DATABASE_MIGRATION_URL")}
+DATABASES = {"default": database("DATABASE_MIGRATION_URL", require_verified_tls=DATABASE_REQUIRE_VERIFIED_TLS)}
 db = DATABASES["default"]
 if env.str("DATABASE_TEST_ADMIN_URL", default=""):
-    db = DATABASES["default"] = database("DATABASE_TEST_ADMIN_URL")
+    db = DATABASES["default"] = database("DATABASE_TEST_ADMIN_URL", require_verified_tls=DATABASE_REQUIRE_VERIFIED_TLS)
 elif db["HOST"].endswith(".pooler.supabase.com") and db["USER"].startswith("postgres."):
     project_ref = db["USER"].split(".", 1)[1]
     db.update(HOST=f"db.{project_ref}.supabase.co", USER="postgres", PORT=5432)
